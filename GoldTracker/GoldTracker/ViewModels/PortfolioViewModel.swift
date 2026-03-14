@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-@Observable
+@MainActor @Observable
 final class PortfolioViewModel {
     var portfolios: [Portfolio] = []
     var transactions: [Transaction] = []

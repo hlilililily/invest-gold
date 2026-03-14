@@ -81,9 +81,16 @@ struct ContentView: View {
 
     // MARK: - macOS
 
+    private var optionalTabBinding: Binding<Tab?> {
+        Binding<Tab?>(
+            get: { selectedTab },
+            set: { if let tab = $0 { selectedTab = tab } }
+        )
+    }
+
     private var macOSLayout: some View {
         NavigationSplitView {
-            List(selection: $selectedTab) {
+            List(selection: optionalTabBinding) {
                 Label("概览", systemImage: "chart.pie")
                     .tag(Tab.dashboard)
                 Label("交易", systemImage: "list.bullet.rectangle")
