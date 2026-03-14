@@ -4,6 +4,8 @@ struct DashboardView: View {
     @Environment(PortfolioViewModel.self) private var viewModel
 
     var body: some View {
+        @Bindable var vm = viewModel
+
         ScrollView {
             VStack(spacing: 20) {
                 headerSection

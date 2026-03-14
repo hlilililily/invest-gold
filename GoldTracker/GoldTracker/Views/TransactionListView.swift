@@ -53,9 +53,7 @@ struct TransactionListView: View {
                             }
                     }
                 }
-                #if os(iOS)
                 .listStyle(.insetGrouped)
-                #endif
             }
         }
         .navigationTitle("交易记录")
