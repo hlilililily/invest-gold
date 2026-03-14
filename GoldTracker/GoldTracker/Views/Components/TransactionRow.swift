@@ -6,31 +6,31 @@ struct TransactionRow: View {
     private var isBuy: Bool { transaction.type == .buy }
 
     var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: transaction.type.icon)
-                .font(.title2)
-                .foregroundStyle(isBuy ? .orange : .blue)
-                .frame(width: 36)
+        HStack(spacing: 14) {
+            ZStack {
+                Circle()
+                    .fill((isBuy ? Color(hex: 0xF5A623) : Color(hex: 0x2196F3)).opacity(0.12))
+                Image(systemName: isBuy ? "arrow.down.left" : "arrow.up.right")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(isBuy ? Color(hex: 0xF5A623) : Color(hex: 0x2196F3))
+            }
+            .frame(width: 40, height: 40)
 
             VStack(alignment: .leading, spacing: 3) {
-                HStack {
-                    Text(transaction.type.rawValue)
-                        .font(.headline)
+                Text(transaction.type.rawValue)
+                    .font(.system(.subheadline, weight: .semibold))
 
+                HStack(spacing: 4) {
                     Text(Formatters.gramsString(transaction.grams))
-                        .font(.subheadline)
+                        .font(.system(.caption, design: .rounded, weight: .medium))
                         .foregroundStyle(.secondary)
-                }
 
-                Text(Formatters.dateShort.string(from: transaction.date))
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
+                    Text("·")
+                        .foregroundStyle(.quaternary)
 
-                if !transaction.note.isEmpty {
-                    Text(transaction.note)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                    Text(Formatters.dateShort.string(from: transaction.date))
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
                 }
             }
 
@@ -38,21 +38,19 @@ struct TransactionRow: View {
 
             VStack(alignment: .trailing, spacing: 3) {
                 Text(Formatters.priceString(transaction.pricePerGram) + "/g")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-
-                Text(Formatters.priceString(transaction.totalAmount))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
 
                 if transaction.type == .sell {
                     Text(Formatters.profitString(transaction.realizedProfit))
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .foregroundStyle(transaction.realizedProfit >= 0 ? .red : .green)
+                        .font(.system(.caption, design: .rounded, weight: .bold))
+                        .foregroundStyle(GoldTheme.profitColor(transaction.realizedProfit))
+                } else {
+                    Text(Formatters.priceString(transaction.totalAmount))
+                        .font(.system(.caption, design: .rounded, weight: .medium))
+                        .foregroundStyle(.secondary)
                 }
             }
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
     }
 }
