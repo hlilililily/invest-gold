@@ -9,6 +9,7 @@ struct ContentView: View {
 
     enum Tab: String, CaseIterable {
         case dashboard = "概览"
+        case analytics = "分析"
         case transactions = "交易"
         case calculator = "计算器"
         case portfolios = "策略"
@@ -16,6 +17,7 @@ struct ContentView: View {
         var icon: String {
             switch self {
             case .dashboard:    return "chart.pie.fill"
+            case .analytics:    return "chart.xyaxis.line"
             case .transactions: return "list.bullet.rectangle.fill"
             case .calculator:   return "function"
             case .portfolios:   return "folder.fill"
@@ -45,6 +47,14 @@ struct ContentView: View {
                 Label(Tab.dashboard.rawValue, systemImage: Tab.dashboard.icon)
             }
             .tag(Tab.dashboard)
+
+            NavigationStack {
+                AnalyticsView()
+            }
+            .tabItem {
+                Label(Tab.analytics.rawValue, systemImage: Tab.analytics.icon)
+            }
+            .tag(Tab.analytics)
 
             NavigationStack {
                 TransactionListView()
@@ -110,6 +120,8 @@ struct ContentView: View {
                 switch selectedTab {
                 case .dashboard:
                     DashboardView()
+                case .analytics:
+                    AnalyticsView()
                 case .transactions:
                     TransactionListView()
                 case .calculator:

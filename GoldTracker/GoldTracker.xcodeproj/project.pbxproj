@@ -18,6 +18,7 @@
 		A10000090000000000000009 /* TransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000090000000000000009; };
 		A1000010000000000000000A /* PortfolioManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010000000000000000A; };
 		A1000011000000000000000B /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000011000000000000000B; };
+		A100001A0000000000000030 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200002300000000000000030; };
 		A1000012000000000000000C /* StatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000012000000000000000C; };
 		A1000013000000000000000D /* TransactionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000013000000000000000D; };
 		A1000014000000000000000E /* ProfitText.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014000000000000000E; };
@@ -61,6 +62,7 @@
 		A2000020000000000000000A /* GoldTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoldTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20000210000000000000014 /* GoldTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GoldTracker.entitlements; sourceTree = "<group>"; };
 		A20000220000000000000020 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A200002300000000000000030 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				A20000090000000000000009 /* TransactionListView.swift */,
 				A2000010000000000000000A /* PortfolioManageView.swift */,
 				A2000011000000000000000B /* CalculatorView.swift */,
+				A200002300000000000000030 /* AnalyticsView.swift */,
 				A70000060000000000000006 /* Components */,
 			);
 			path = Views;
@@ -290,6 +293,7 @@
 				A1000014000000000000000E /* ProfitText.swift in Sources */,
 				A1000015000000000000000F /* Formatters.swift in Sources */,
 				A10000190000000000000020 /* Theme.swift in Sources */,
+				A100001A0000000000000030 /* AnalyticsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
