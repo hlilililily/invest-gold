@@ -78,7 +78,7 @@ struct AnalyticsView: View {
             }
             .padding(.bottom, 32)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.appGroupedBackground)
         .navigationTitle("收益分析")
     }
 
@@ -102,7 +102,7 @@ struct AnalyticsView: View {
                                 if selected {
                                     Capsule().fill(Color("BrandGold"))
                                 } else {
-                                    Capsule().fill(Color(.secondarySystemBackground))
+                                    Capsule().fill(Color.appSecondaryBackground)
                                 }
                             }
                             .foregroundStyle(selected ? .white : .secondary)
@@ -129,7 +129,7 @@ struct AnalyticsView: View {
         }
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
         }
     }
@@ -303,7 +303,7 @@ struct AnalyticsView: View {
             }
             .background {
                 RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                    .fill(Color(.systemBackground))
+                    .fill(Color.appBackground)
                     .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
             }
         }
@@ -392,7 +392,7 @@ struct AnalyticsView: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(Color(.secondarySystemBackground))
+                        .fill(Color.appSecondaryBackground)
                         .frame(height: 10)
 
                     Capsule()
@@ -420,7 +420,7 @@ struct AnalyticsView: View {
         .padding(14)
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.innerRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.04), radius: 6, y: 2)
         }
     }
@@ -463,7 +463,7 @@ struct AnalyticsView: View {
             }
             .background {
                 RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                    .fill(Color(.systemBackground))
+                    .fill(Color.appBackground)
                     .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
             }
         }

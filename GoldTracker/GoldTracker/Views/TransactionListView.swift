@@ -36,7 +36,7 @@ struct TransactionListView: View {
                 transactionList
             }
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.appGroupedBackground)
         .navigationTitle("交易记录")
     }
 
@@ -68,7 +68,7 @@ struct TransactionListView: View {
         }
         .padding(3)
         .background {
-            Capsule().fill(Color(.secondarySystemBackground))
+            Capsule().fill(Color.appSecondaryBackground)
         }
     }
 
@@ -120,7 +120,7 @@ struct TransactionListView: View {
         .padding(10)
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.innerRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.04), radius: 6, y: 2)
         }
     }
@@ -167,7 +167,7 @@ struct TransactionListView: View {
             .padding(.vertical, 8)
             .background {
                 RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                    .fill(Color(.systemBackground))
+                    .fill(Color.appBackground)
                     .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
             }
             .padding(.horizontal, 20)

@@ -26,7 +26,7 @@ struct CalculatorView: View {
             }
             .padding(20)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.appGroupedBackground)
         .navigationTitle("收益计算器")
     }
 
@@ -56,7 +56,7 @@ struct CalculatorView: View {
         }
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
         }
     }
@@ -108,7 +108,7 @@ struct CalculatorView: View {
         }
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
         }
     }
@@ -179,7 +179,7 @@ struct CalculatorView: View {
             }
             .background {
                 RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                    .fill(Color(.systemBackground))
+                    .fill(Color.appBackground)
                     .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
             }
         }
@@ -246,7 +246,7 @@ struct CalculatorView: View {
             }
             .background {
                 RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                    .fill(Color(.systemBackground))
+                    .fill(Color.appBackground)
                     .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
             }
         }
