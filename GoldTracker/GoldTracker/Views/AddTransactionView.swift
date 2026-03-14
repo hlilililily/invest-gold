@@ -27,7 +27,7 @@ struct AddTransactionView: View {
                 }
                 .padding(20)
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color.appGroupedBackground)
             .navigationTitle("添加交易")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -89,7 +89,7 @@ struct AddTransactionView: View {
         .padding(4)
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.innerRadius, style: .continuous)
-                .fill(Color(.secondarySystemBackground))
+                .fill(Color.appSecondaryBackground)
         }
     }
 
@@ -155,7 +155,7 @@ struct AddTransactionView: View {
         }
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
         }
     }
@@ -181,7 +181,7 @@ struct AddTransactionView: View {
         }
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
         }
     }
@@ -262,7 +262,7 @@ struct AddTransactionView: View {
         }
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
         }
     }

@@ -31,7 +31,7 @@ struct DashboardView: View {
                     .padding(.bottom, 32)
             }
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.appGroupedBackground)
         .navigationTitle("黄金管家")
     }
 
@@ -57,7 +57,7 @@ struct DashboardView: View {
                                         .fill(Color("BrandGold"))
                                 } else {
                                     Capsule()
-                                        .fill(Color(.secondarySystemBackground))
+                                        .fill(Color.appSecondaryBackground)
                                 }
                             }
                             .foregroundStyle(selected ? .white : .primary)
@@ -182,7 +182,7 @@ struct DashboardView: View {
         .padding(14)
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
         }
     }
@@ -251,7 +251,7 @@ struct DashboardView: View {
                 }
                 .background {
                     RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                        .fill(Color(.systemBackground))
+                        .fill(Color.appBackground)
                         .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
                 }
             }
@@ -306,7 +306,7 @@ struct DashboardView: View {
                 .frame(height: 140)
                 .background {
                     RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                        .fill(Color(.systemBackground))
+                        .fill(Color.appBackground)
                         .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
                 }
             } else {
@@ -322,7 +322,7 @@ struct DashboardView: View {
                 .padding(.vertical, 6)
                 .background {
                     RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                        .fill(Color(.systemBackground))
+                        .fill(Color.appBackground)
                         .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
                 }
             }

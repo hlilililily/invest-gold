@@ -46,9 +46,30 @@ extension Color {
         )
     }
 
-    static let cardBackground = Color("CardBackground", bundle: nil)
-    static let elevatedBackground = Color("ElevatedBackground", bundle: nil)
-    static let subtleText = Color.secondary.opacity(0.8)
+    // Cross-platform system colors
+    static var appBackground: Color {
+        #if os(iOS)
+        Color(uiColor: .systemBackground)
+        #else
+        Color(nsColor: .windowBackgroundColor)
+        #endif
+    }
+
+    static var appSecondaryBackground: Color {
+        #if os(iOS)
+        Color(uiColor: .secondarySystemBackground)
+        #else
+        Color(nsColor: .controlBackgroundColor)
+        #endif
+    }
+
+    static var appGroupedBackground: Color {
+        #if os(iOS)
+        Color(uiColor: .systemGroupedBackground)
+        #else
+        Color(nsColor: .windowBackgroundColor)
+        #endif
+    }
 }
 
 // MARK: - View Modifiers
@@ -73,7 +94,7 @@ struct ElevatedCard: ViewModifier {
             .padding(16)
             .background {
                 RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                    .fill(Color(.systemBackground))
+                    .fill(Color.appBackground)
                     .shadow(color: .black.opacity(0.08), radius: 16, y: 6)
             }
     }
@@ -85,7 +106,7 @@ struct SurfaceCard: ViewModifier {
             .padding(14)
             .background {
                 RoundedRectangle(cornerRadius: GoldTheme.innerRadius, style: .continuous)
-                    .fill(Color(.secondarySystemBackground))
+                    .fill(Color.appSecondaryBackground)
             }
     }
 }

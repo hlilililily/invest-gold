@@ -17,7 +17,7 @@ struct PortfolioManageView: View {
             }
             .padding(20)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.appGroupedBackground)
         .navigationTitle("策略管理")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -149,7 +149,7 @@ struct PortfolioManageView: View {
         .padding(16)
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                .fill(Color(.systemBackground))
+                .fill(Color.appBackground)
                 .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
                 .overlay {
                     if isActive {
@@ -222,7 +222,7 @@ struct PortfolioManageView: View {
             }
             .background {
                 RoundedRectangle(cornerRadius: GoldTheme.cardRadius, style: .continuous)
-                    .fill(Color(.systemBackground))
+                    .fill(Color.appBackground)
                     .shadow(color: .black.opacity(0.06), radius: 12, y: 4)
             }
         }

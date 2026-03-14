@@ -37,7 +37,7 @@ struct StatCard: View {
         .padding(compact ? 12 : 14)
         .background {
             RoundedRectangle(cornerRadius: GoldTheme.innerRadius, style: .continuous)
-                .fill(Color(.secondarySystemBackground))
+                .fill(Color.appSecondaryBackground)
         }
     }
 }
