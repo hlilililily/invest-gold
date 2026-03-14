@@ -234,4 +234,157 @@ final class GoldCalculatorTests: XCTestCase {
         // total realized = 1400 + 2600 = 4000
         XCTAssertEqual(position.realizedProfit, 4000, accuracy: epsilon)
     }
+
+    // MARK: - Performance Metrics
+
+    func testMetrics_BasicBuyAndHold() {
+        let start = Date(timeIntervalSince1970: 0) // 1970-01-01
+        let end = start.addingTimeInterval(365 * 86400) // 1 year later
+
+        let transactions: [GoldCalculator.ReplayTransaction] = [
+            .init(type: .buy, grams: 100, pricePerGram: 1000, date: start.addingTimeInterval(86400)),
+        ]
+
+        let metrics = GoldCalculator.computeMetrics(
+            allTransactions: transactions,
+            dateRange: start...end,
+            marketPrice: 1100
+        )
+
+        XCTAssertEqual(metrics.totalBuyAmount, 100_000, accuracy: epsilon)
+        XCTAssertEqual(metrics.buyCount, 1)
+        XCTAssertEqual(metrics.sellCount, 0)
+        XCTAssertEqual(metrics.realizedProfit, 0, accuracy: epsilon)
+        // unrealized = (1100 - 1000) * 100 = 10000
+        XCTAssertEqual(metrics.unrealizedProfit, 10_000, accuracy: epsilon)
+        XCTAssertEqual(metrics.totalPnL, 10_000, accuracy: epsilon)
+        // simple return = 10000 / 100000 = 0.10
+        XCTAssertEqual(metrics.simpleReturn, 0.10, accuracy: epsilon)
+    }
+
+    func testMetrics_BuySellCycle() {
+        let start = Date(timeIntervalSince1970: 0)
+        let end = start.addingTimeInterval(180 * 86400) // 180 days
+
+        let transactions: [GoldCalculator.ReplayTransaction] = [
+            .init(type: .buy, grams: 100, pricePerGram: 1000, date: start.addingTimeInterval(86400)),
+            .init(type: .sell, grams: 50, pricePerGram: 1200, date: start.addingTimeInterval(90 * 86400)),
+        ]
+
+        let metrics = GoldCalculator.computeMetrics(
+            allTransactions: transactions,
+            dateRange: start...end,
+            marketPrice: 1100
+        )
+
+        XCTAssertEqual(metrics.buyCount, 1)
+        XCTAssertEqual(metrics.sellCount, 1)
+        // realized = (1200-1000)*50 = 10000
+        XCTAssertEqual(metrics.realizedProfit, 10_000, accuracy: epsilon)
+        // unrealized = (1100-1000)*50 = 5000
+        XCTAssertEqual(metrics.unrealizedProfit, 5_000, accuracy: epsilon)
+        XCTAssertEqual(metrics.totalPnL, 15_000, accuracy: epsilon)
+
+        XCTAssertEqual(metrics.netInvested, 100_000 - 60_000, accuracy: epsilon)
+
+        // win rate = 1/1 = 100%
+        XCTAssertEqual(metrics.winRate, 1.0, accuracy: epsilon)
+        XCTAssertEqual(metrics.maxWin, 10_000, accuracy: epsilon)
+    }
+
+    func testMetrics_DateRange_FiltersCorrectly() {
+        let day0 = Date(timeIntervalSince1970: 0)
+        let day30 = day0.addingTimeInterval(30 * 86400)
+        let day60 = day0.addingTimeInterval(60 * 86400)
+        let day90 = day0.addingTimeInterval(90 * 86400)
+
+        let transactions: [GoldCalculator.ReplayTransaction] = [
+            .init(type: .buy, grams: 100, pricePerGram: 1000, date: day0.addingTimeInterval(86400)),
+            .init(type: .sell, grams: 50, pricePerGram: 1200, date: day60.addingTimeInterval(86400)),
+        ]
+
+        // Only look at day30...day90: the buy at day1 is before the range
+        let metrics = GoldCalculator.computeMetrics(
+            allTransactions: transactions,
+            dateRange: day30...day90,
+            marketPrice: 1100
+        )
+
+        // Opening position should be 100g @ 1000 (from before the range)
+        XCTAssertEqual(metrics.endPosition.totalGrams, 50, accuracy: epsilon)
+        // The sell at day61 IS in range, so it counts
+        XCTAssertEqual(metrics.sellCount, 1)
+        // The buy at day1 is NOT in range
+        XCTAssertEqual(metrics.buyCount, 0)
+        XCTAssertEqual(metrics.totalBuyAmount, 0, accuracy: epsilon)
+    }
+
+    func testMetrics_WinRate_MultiSell() {
+        let start = Date(timeIntervalSince1970: 0)
+        let end = start.addingTimeInterval(365 * 86400)
+
+        let transactions: [GoldCalculator.ReplayTransaction] = [
+            .init(type: .buy, grams: 100, pricePerGram: 1000, date: start.addingTimeInterval(86400)),
+            .init(type: .sell, grams: 20, pricePerGram: 1100, date: start.addingTimeInterval(30 * 86400)),  // win
+            .init(type: .sell, grams: 20, pricePerGram: 900, date: start.addingTimeInterval(60 * 86400)),   // loss
+            .init(type: .sell, grams: 20, pricePerGram: 1050, date: start.addingTimeInterval(90 * 86400)),  // win
+        ]
+
+        let metrics = GoldCalculator.computeMetrics(
+            allTransactions: transactions,
+            dateRange: start...end,
+            marketPrice: 1000
+        )
+
+        // 3 sells: 2 wins, 1 loss => win rate = 2/3
+        XCTAssertEqual(metrics.winRate!, 2.0 / 3.0, accuracy: epsilon)
+        // max win = (1100-1000)*20 = 2000
+        XCTAssertEqual(metrics.maxWin, 2000, accuracy: epsilon)
+        // max loss = (900-1000)*20 = -2000
+        XCTAssertEqual(metrics.maxLoss, -2000, accuracy: epsilon)
+    }
+
+    func testMetrics_XIRR_NotNil() {
+        let start = Date(timeIntervalSince1970: 0)
+        let end = start.addingTimeInterval(365 * 86400)
+
+        let transactions: [GoldCalculator.ReplayTransaction] = [
+            .init(type: .buy, grams: 100, pricePerGram: 1000, date: start.addingTimeInterval(86400)),
+        ]
+
+        let metrics = GoldCalculator.computeMetrics(
+            allTransactions: transactions,
+            dateRange: start...end,
+            marketPrice: 1100
+        )
+
+        // Bought at 1000, worth 1100 after ~1 year => ~10% XIRR
+        XCTAssertNotNil(metrics.xirr)
+        if let xirr = metrics.xirr {
+            XCTAssertEqual(xirr, 0.10, accuracy: 0.02)
+        }
+    }
+
+    func testMetrics_AnnualizedReturn() {
+        let start = Date(timeIntervalSince1970: 0)
+        let end = start.addingTimeInterval(180 * 86400) // half year
+
+        let transactions: [GoldCalculator.ReplayTransaction] = [
+            .init(type: .buy, grams: 100, pricePerGram: 1000, date: start.addingTimeInterval(86400)),
+        ]
+
+        let metrics = GoldCalculator.computeMetrics(
+            allTransactions: transactions,
+            dateRange: start...end,
+            marketPrice: 1050
+        )
+
+        // 5% in ~180 days => annualized should be ~10.25%
+        XCTAssertNotNil(metrics.annualizedReturn)
+        XCTAssertEqual(metrics.simpleReturn, 0.05, accuracy: epsilon)
+        if let ann = metrics.annualizedReturn {
+            XCTAssertGreaterThan(ann, 0.09)
+            XCTAssertLessThan(ann, 0.12)
+        }
+    }
 }
