@@ -23,10 +23,11 @@ struct GoldTrackerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .tint(Color("BrandGold"))
         }
         .modelContainer(sharedModelContainer)
         #if os(macOS)
-        .defaultSize(width: 900, height: 650)
+        .defaultSize(width: 960, height: 680)
         #endif
     }
 }
