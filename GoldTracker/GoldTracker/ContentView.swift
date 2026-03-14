@@ -7,11 +7,22 @@ struct ContentView: View {
     @State private var showAddTransaction = false
     @State private var selectedTab: Tab = .dashboard
 
-    enum Tab: String {
+    enum Tab: String, CaseIterable {
         case dashboard = "概览"
+        case analytics = "分析"
         case transactions = "交易"
         case calculator = "计算器"
         case portfolios = "策略"
+
+        var icon: String {
+            switch self {
+            case .dashboard:    return "chart.pie.fill"
+            case .analytics:    return "chart.xyaxis.line"
+            case .transactions: return "list.bullet.rectangle.fill"
+            case .calculator:   return "function"
+            case .portfolios:   return "folder.fill"
+            }
+        }
     }
 
     var body: some View {
@@ -29,26 +40,30 @@ struct ContentView: View {
             NavigationStack {
                 DashboardView()
                     .toolbar {
-                        ToolbarItem(placement: .primaryAction) {
-                            addButton
-                        }
+                        ToolbarItem(placement: .primaryAction) { addButton }
                     }
             }
             .tabItem {
-                Label("概览", systemImage: "chart.pie")
+                Label(Tab.dashboard.rawValue, systemImage: Tab.dashboard.icon)
             }
             .tag(Tab.dashboard)
 
             NavigationStack {
+                AnalyticsView()
+            }
+            .tabItem {
+                Label(Tab.analytics.rawValue, systemImage: Tab.analytics.icon)
+            }
+            .tag(Tab.analytics)
+
+            NavigationStack {
                 TransactionListView()
                     .toolbar {
-                        ToolbarItem(placement: .primaryAction) {
-                            addButton
-                        }
+                        ToolbarItem(placement: .primaryAction) { addButton }
                     }
             }
             .tabItem {
-                Label("交易", systemImage: "list.bullet.rectangle")
+                Label(Tab.transactions.rawValue, systemImage: Tab.transactions.icon)
             }
             .tag(Tab.transactions)
 
@@ -56,7 +71,7 @@ struct ContentView: View {
                 CalculatorView()
             }
             .tabItem {
-                Label("计算器", systemImage: "function")
+                Label(Tab.calculator.rawValue, systemImage: Tab.calculator.icon)
             }
             .tag(Tab.calculator)
 
@@ -64,11 +79,11 @@ struct ContentView: View {
                 PortfolioManageView()
             }
             .tabItem {
-                Label("策略", systemImage: "folder")
+                Label(Tab.portfolios.rawValue, systemImage: Tab.portfolios.icon)
             }
             .tag(Tab.portfolios)
         }
-        .tint(.orange)
+        .tint(Color("BrandGold"))
         .environment(viewModel)
         .sheet(isPresented: $showAddTransaction) {
             AddTransactionView()
@@ -91,22 +106,22 @@ struct ContentView: View {
     private var macOSLayout: some View {
         NavigationSplitView {
             List(selection: optionalTabBinding) {
-                Label("概览", systemImage: "chart.pie")
-                    .tag(Tab.dashboard)
-                Label("交易", systemImage: "list.bullet.rectangle")
-                    .tag(Tab.transactions)
-                Label("计算器", systemImage: "function")
-                    .tag(Tab.calculator)
-                Label("策略", systemImage: "folder")
-                    .tag(Tab.portfolios)
+                Section {
+                    ForEach(Tab.allCases, id: \.self) { tab in
+                        Label(tab.rawValue, systemImage: tab.icon)
+                            .tag(tab)
+                    }
+                }
             }
             .listStyle(.sidebar)
-            .navigationSplitViewColumnWidth(min: 160, ideal: 180)
+            .navigationSplitViewColumnWidth(min: 160, ideal: 190)
         } detail: {
             NavigationStack {
                 switch selectedTab {
                 case .dashboard:
                     DashboardView()
+                case .analytics:
+                    AnalyticsView()
                 case .transactions:
                     TransactionListView()
                 case .calculator:
@@ -116,16 +131,15 @@ struct ContentView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    addButton
-                }
+                ToolbarItem(placement: .primaryAction) { addButton }
             }
         }
+        .tint(Color("BrandGold"))
         .environment(viewModel)
         .sheet(isPresented: $showAddTransaction) {
             AddTransactionView()
                 .environment(viewModel)
-                .frame(minWidth: 420, minHeight: 500)
+                .frame(minWidth: 460, minHeight: 560)
         }
         .onAppear {
             viewModel.setup(modelContext: modelContext)
@@ -142,6 +156,6 @@ struct ContentView: View {
                 .symbolRenderingMode(.hierarchical)
                 .font(.title3)
         }
-        .tint(.orange)
+        .tint(Color("BrandGold"))
     }
 }

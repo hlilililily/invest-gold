@@ -260,4 +260,27 @@ final class PortfolioViewModel {
         guard portfolio.totalGrams > 0, currentMarketPrice > 0 else { return 0 }
         return (currentMarketPrice - portfolio.averageCost) * portfolio.totalGrams
     }
+
+    // MARK: - Analytics
+
+    func computeMetrics(dateRange: ClosedRange<Date>) -> GoldCalculator.PerformanceMetrics {
+        let replayData = filteredTransactions.map {
+            GoldCalculator.ReplayTransaction(
+                type: $0.type,
+                grams: $0.grams,
+                pricePerGram: $0.pricePerGram,
+                date: $0.date
+            )
+        }
+        return GoldCalculator.computeMetrics(
+            allTransactions: replayData,
+            dateRange: dateRange,
+            marketPrice: currentMarketPrice
+        )
+    }
+
+    /// Earliest transaction date in the current portfolio
+    var earliestTransactionDate: Date? {
+        filteredTransactions.last?.date
+    }
 }
